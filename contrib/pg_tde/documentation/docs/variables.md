@@ -7,7 +7,7 @@ The `pg_tde` extension provides GUC variables to configure the behaviour of the 
 **Type** - boolean <br>
 **Default** - off
 
-A `boolean` variable controlling if WAL writes are encrypted or not.
+A `boolean` variable that controls if WAL writes are encrypted or not.
 
 Changing this variable requires a server restart, and can only be set at the server level.
 
@@ -17,14 +17,14 @@ This variable only controls new writes to the WAL, it doesn't affect existing WA
 
 `pg_tde` is always capable of reading existing encrypted WAL records, as long as the keys used for the encryption are still available.
 
-Enabling WAL encryption requires a configured global principal key. Refer to the [WAL encryption configuration](wal-encription.md) documentation for more information.
+Enabling WAL encryption requires a configured global principal key. Refer to the [WAL encryption configuration](wal-encryption.md) documentation for more information.
 
 ## pg_tde.enforce_encryption
 
 **Type** - boolean <br>
 **Default** - off
 
-A `boolean` variable controlling if the creation of new, not encrypted tables is allowed.
+A `boolean` variable that controls if the creation of new, not encrypted tables is allowed.
 
 If enabled, `CREATE TABLE` statements will fail unless they use the `tde_heap` access method.
 
@@ -46,7 +46,7 @@ Setting or changing the value requires superuser permissions.
 **Type** - boolean <br>
 **Default** - on
 
-A `boolean` variable controlling if databases can use global key providers for storing principal keys.
+A `boolean` variable that controls if databases can use global key providers for storing principal keys.
 
 If disabled, functions that change the key providers can only work with database local key providers.
 
