@@ -24,7 +24,7 @@ Enabling WAL encryption requires a configured global principal key. Refer to the
 **Type** - boolean <br>
 **Default** - off
 
-A `boolean` variable controlling if the creation of new not encrypted tables is enabled or not.
+A `boolean` variable controlling if the creation of new, not encrypted tables is allowed.
 
 If enabled, `CREATE TABLE` statements will fail unless they use the `tde_heap` access method.
 
