@@ -7,10 +7,7 @@
 
 !!! important
 
-    This version of Percona Transparent Data Encryption extension **is 
-    not recommended for production environments yet**. We encourage you to test it and [give your feedback](https://forums.percona.com/c/postgresql/pg-tde-transparent-data-encryption-tde/82).
-  
-    This will help us improve the product and make it production-ready faster.
+    `pg_tde` Release Candidate is not backward compatible with `pg_tde` Beta2 due to significant changes in code. This means you cannot directly upgrade from one version to another. You must [uninstall](../uninstall.md) `pg_tde` Beta2 first and then [install](../install.md) and configure the new Release Candidate version.
 
 ## Release Highlights
 
