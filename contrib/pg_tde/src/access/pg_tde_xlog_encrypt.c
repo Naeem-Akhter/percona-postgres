@@ -85,7 +85,7 @@ TDEXlogCheckSane(void)
 		if (key == NULL)
 		{
 			ereport(ERROR,
-					(errmsg("WAL encryption can only be enabled with a properly configured principal key. Disable pg_tde.wal_encrypt and create one using pg_tde_set_server_principal_key() or pg_tde_set_global_principal_key() before enabling it.")));
+					(errmsg("WAL encryption can only be enabled with a properly configured principal key. Disable pg_tde.wal_encrypt and create one using pg_tde_set_server_principal_key_global_provider() or pg_tde_set_principal_key_global_provider() before enabling it.")));
 		}
 	}
 }

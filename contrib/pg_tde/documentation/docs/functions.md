@@ -215,12 +215,12 @@ SELECT pg_tde_set_principal_key('name-of-the-principal-key','provider-name','ens
   If the provider already stores a key by that name, the function returns an error.
 * If set to `false`, an existing principal key may be reused.
 
-### pg_tde_set_server_principal_key
+### pg_tde_set_server_principal_key_global_provider
 
-Creates or rotates the global principal key using the specified key provider. Use this function to set a principal key for WAL encryption.
+Creates or rotates the server principal key using the specified global key provider. Use this function to set a principal key for WAL encryption.
 
 ```
-SELECT pg_tde_set_server_principal_key('name-of-the-principal-key','provider-name','ensure_new_key');
+SELECT pg_tde_set_server_principal_key_global_provider('name-of-the-principal-key','provider-name','ensure_new_key');
 ```
 
 The `ensure_new_key` parameter instructs the function how to handle a principal key during key rotation:
@@ -230,14 +230,14 @@ The `ensure_new_key` parameter instructs the function how to handle a principal 
 * If set to `false`, an existing principal key may be reused.
 
 
-### pg_tde_set_default_principal_key
+### pg_tde_set_default_principal_key_global_provider
 
-Creates or rotates the default principal key for the server using the specified key provider.
+Creates or rotates the default principal key for the server using the specified global key provider.
 
 The default key is automatically used as a principal key by any database that doesn't have a specific principal key already created when the first encrypted database object is created.
 
 ```
-SELECT pg_tde_set_default_principal_key('name-of-the-principal-key','provider-name','ensure_new_key');
+SELECT pg_tde_set_default_principal_key_global_provider('name-of-the-principal-key','provider-name','ensure_new_key');
 ```
 
 The `ensure_new_key` parameter instructs the function how to handle a principal key during key rotation:
@@ -274,12 +274,12 @@ Displays information about the principal key for the current database, if it exi
 SELECT pg_tde_principal_key_info()
 ```
 
-### pg_tde_global_principal_key_info
+### pg_tde_server_principal_key_info
 
-Displays information about the principal key for the global scope, if exists.
+Displays information about the principal key for the server scope, if exists.
 
 ```
-SELECT pg_tde_global_principal_key_info()
+SELECT pg_tde_server_principal_key_info()
 ```
 
 ### pg_tde_verify_principal_key
