@@ -14,4 +14,6 @@ if [ "$1" = "--continue" ]; then
     ADD_FLAGS="-k"
 fi
 
-EXTRA_REGRESS_OPTS="--extra-setup=$SCRIPT_DIR/tde_setup.sql" make installcheck-world $ADD_FLAGS
+cd $SCRIPT_DIR/../contrib/pg_tde
+pwd
+EXTRA_REGRESS_OPTS="--extra-setup=$SCRIPT_DIR/tde_setup.sql" make installcheck $ADD_FLAGS
