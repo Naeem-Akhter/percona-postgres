@@ -7,17 +7,6 @@ use Test::More;
 use lib 't';
 use Env;
 
-# use strict;
-# use warnings;
-# use File::Basename;
-# use File::Compare;
-# use File::Copy;
-# use Test::More;
-# use lib 't';
-# use Env;
-# use pgtde;
-
-
 if (!defined($ENV{PERCONA_SERVER_VERSION}))
 {
      plan skip_all => "PERCONA_SERVER_VERSION variable not define in the environment.";
