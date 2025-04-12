@@ -121,7 +121,7 @@ jobs:
           retention-days: 3
 
   tde_coverage:
-    name: Test PSP with TDE
+    name: Test PSP with TDE For Coverage
     runs-on: ${{ inputs.os }}
     if: inputs.build_script == 'make'
     needs: build
@@ -178,7 +178,7 @@ jobs:
         with:
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          working-directory: .src/contrib/pg_tde
+          working-directory: src/contrib/pg_tde
           files: ./pg_tde.c.gcov,./percona.h.gcov,./pg_tde_defs.c.gcov,./transam.h.gcov,./pg_tde_event_capture.c.gcov,./pg_tde_guc.c.gcov,./pg_tde_tdemap.c.gcov,./pg_tde_xlog.c.gcov,./pg_tde_xlog_encrypt.c.gcov,./pg_tde_tdemap.h.gcov,./xlog_smgr.h.gcov,./generic.h.gcov,./atomics.h.gcov,./tde_keyring.c.gcov,./pg_list.h.gcov,./tde_keyring_parse_opts.c.gcov,./timestamp.h.gcov,./tde_principal_key.c.gcov,./funcapi.h.gcov,./pg_tde_shmem.c.gcov,./pg_tde_utils.c.gcov,./postgres.h.gcov,./enc_aes.c.gcov,./enc_tde.c.gcov,./palloc.h.gcov,./keyring_api.c.gcov,./keyring_curl.c.gcov,./keyring_file.c.gcov,./keyring_kmip.c.gcov,./keyring_vault.c.gcov,./typecheck-gcc.h.gcov,./pg_tde_smgr.c.gcov,./pg_tde_xact_handler.c.gcov
 
       - name: Report on test fail
