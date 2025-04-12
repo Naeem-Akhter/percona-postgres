@@ -7,8 +7,12 @@ TDE_ONLY=0
 for arg in "$@"
 do
     case "$arg" in
-    --continue)    ADD_FLAGS="-k";;
-    --tde-only)    TDE_ONLY=1;;
+        --continue)
+            ADD_FLAGS="-k"
+            shift;;
+        --tde-only)
+            TDE_ONLY=1
+            shift;;
     esac
 done
 
