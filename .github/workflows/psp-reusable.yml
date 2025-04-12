@@ -99,11 +99,11 @@ jobs:
         run: tar -xzf artifacts.tar
 
       - name: Install dependencies
-        run: src/ci_scripts/ubuntu-deps.sh 
-  
+        run: src/ci_scripts/ubuntu-deps.sh
+
       - name: Setup kmip and vault
         run: src/ci_scripts/setup-keyring-servers.sh
-  
+
       - name: Test postgres with TDE
         run: src/ci_scripts/${{ inputs.build_script }}-test-tde.sh --continue
 
@@ -118,4 +118,85 @@ jobs:
             src/contrib/*/results
             src/contrib/*/regression.diffs
             src/contrib/*/regression.out
+          retention-days: 3
+
+  tde_coverage:
+    name: Generate Codecov Code Coverage
+    runs-on: ${{ inputs.os }}
+    if: inputs.build_script == 'make' && inputs.build_type == 'debug'
+    needs: build
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.artifact_name }}
+          path: .
+
+      - name: 'Untar files'
+        run: tar -xzf artifacts.tar
+
+      - name: Install dependencies
+        run: src/ci_scripts/ubuntu-deps.sh
+
+      - name: Setup kmip and vault
+        run: src/ci_scripts/setup-keyring-servers.sh
+
+      - name: Test postgres with TDE to generate coverage
+        run: src/ci_scripts/${{ inputs.build_script }}-test-tde.sh --continue --tde-only
+
+      - name: Run code coverage
+        run: |
+          gcov -abcfu src/pg_tde_change_key_provider.c
+          gcov -abcfu src/pg_tde_defs.c
+          gcov -abcfu src/pg_tde_event_capture.c
+          gcov -abcfu src/pg_tde_guc.c
+          gcov -abcfu src/pg_tde.c
+          gcov -abcfu src/access/pg_tde_tdemap.c
+          gcov -abcfu src/access/pg_tde_xlog_encrypt.c
+          gcov -abcfu src/access/pg_tde_xlog.c
+          gcov -abcfu src/catalog/tde_keyring_parse_opts.c
+          gcov -abcfu src/catalog/tde_keyring.c
+          gcov -abcfu src/catalog/tde_principal_key.c
+          gcov -abcfu src/common/pg_tde_shmem.c
+          gcov -abcfu src/common/pg_tde_utils.c
+          gcov -abcfu src/encryption/enc_aes.c
+          gcov -abcfu src/encryption/enc_tde.c
+          gcov -abcfu src/keyring/keyring_api.c
+          gcov -abcfu src/keyring/keyring_curl.c
+          gcov -abcfu src/keyring/keyring_file.c
+          gcov -abcfu src/keyring/keyring_kmip_impl.c
+          gcov -abcfu src/keyring/keyring_kmip.c
+          gcov -abcfu src/keyring/keyring_vault.c
+          gcov -abcfu src/smgr/pg_tde_smgr.c
+          gcov -abcfu src/transam/pg_tde_xact_handler.c
+        working-directory: src/contrib/pg_tde
+
+      - name: Upload coverage data to codecov.io
+        uses: codecov/codecov-action@v5
+        with:
+          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          working-directory: src/contrib/pg_tde
+          files: >
+            ./pg_tde_change_key_provider.c.gcov,./pg_tde_defs.c.gcov,./pg_tde_event_capture.c.gcov,
+            ./pg_tde_guc.c.gcov,./pg_tde.c.gcov,./pg_tde_tdemap.c.gcov,./pg_tde_xlog_encrypt.c.gcov,
+            ./pg_tde_xlog.c.gcov,./tde_keyring_parse_opts.c.gcov,./tde_keyring.c.gcov,
+            ./tde_principal_key.c.gcov,./pg_tde_shmem.c.gcov,./pg_tde_utils.c.gcov,./enc_aes.c.gcov,
+            ./enc_tde.c.gcov,./keyring_api.c.gcov,./keyring_curl.c.gcov,./keyring_file.c.gcov,
+            ./keyring_kmip_impl.c.gcov,./keyring_kmip.c.gcov,./keyring_vault.c.gcov,./pg_tde_smgr.c.gcov,
+            ./pg_tde_xact_handler.c.gcov
+
+      - name: Report on test fail
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: coverage-testlog-tde-${{ inputs.os }}-${{  inputs.build_script }}-${{ inputs.build_type }}
+          path: |
+            src/build/testrun/
+            src/contrib/pg_tde/t/
+            src/contrib/pg_tde/results
+            src/contrib/pg_tde/regression.diffs
+            src/contrib/pg_tde/regression.out
+            src/contrib/pg_tde/*.gcov
           retention-days: 3
