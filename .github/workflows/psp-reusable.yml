@@ -147,38 +147,38 @@ jobs:
 
       - name: Run code coverage
         run: |
-          gcov -abcfu src/pg_tde.c
-          gcov -abcfu src/pg_tde_defs.c
-          gcov -abcfu src/pg_tde_event_capture.c
-          gcov -abcfu src/pg_tde_guc.c
-          gcov -abcfu src/access/pg_tde_ddl.c
-          gcov -abcfu src/access/pg_tde_slot.c
-          gcov -abcfu src/access/pg_tde_tdemap.c
-          gcov -abcfu src/access/pg_tde_xlog.c
-          gcov -abcfu src/access/pg_tde_xlog_encrypt.c
-          gcov -abcfu src/catalog/tde_keyring.c
-          gcov -abcfu src/catalog/tde_keyring_parse_opts.c
-          gcov -abcfu src/catalog/tde_principal_key.c
-          gcov -abcfu src/common/pg_tde_shmem.c
-          gcov -abcfu src/common/pg_tde_utils.c
-          gcov -abcfu src/encryption/enc_aes.c
-          gcov -abcfu src/encryption/enc_tde.c
-          gcov -abcfu src/keyring/keyring_api.c
-          gcov -abcfu src/keyring/keyring_curl.c
-          gcov -abcfu src/keyring/keyring_file.c
-          gcov -abcfu src/keyring/keyring_kmip.c
-          gcov -abcfu src/keyring/keyring_kmip_ereport.c
-          gcov -abcfu src/keyring/keyring_vault.c
-          gcov -abcfu src/smgr/pg_tde_smgr.c
-          gcov -abcfu src/transam/pg_tde_xact_handler.c
-        working-directory: src/contrib/pg_tde
+          gcov -abcfu contrib/pg_tde/src/pg_tde.c
+          gcov -abcfu contrib/pg_tde/src/pg_tde_defs.c
+          gcov -abcfu contrib/pg_tde/src/pg_tde_event_capture.c
+          gcov -abcfu contrib/pg_tde/src/pg_tde_guc.c
+          gcov -abcfu contrib/pg_tde/src/access/pg_tde_ddl.c
+          gcov -abcfu contrib/pg_tde/src/access/pg_tde_slot.c
+          gcov -abcfu contrib/pg_tde/src/access/pg_tde_tdemap.c
+          gcov -abcfu contrib/pg_tde/src/access/pg_tde_xlog.c
+          gcov -abcfu contrib/pg_tde/src/access/pg_tde_xlog_encrypt.c
+          gcov -abcfu contrib/pg_tde/src/catalog/tde_keyring.c
+          gcov -abcfu contrib/pg_tde/src/catalog/tde_keyring_parse_opts.c
+          gcov -abcfu contrib/pg_tde/src/catalog/tde_principal_key.c
+          gcov -abcfu contrib/pg_tde/src/common/pg_tde_shmem.c
+          gcov -abcfu contrib/pg_tde/src/common/pg_tde_utils.c
+          gcov -abcfu contrib/pg_tde/src/encryption/enc_aes.c
+          gcov -abcfu contrib/pg_tde/src/encryption/enc_tde.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_api.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_curl.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_file.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_kmip.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_kmip_ereport.c
+          gcov -abcfu contrib/pg_tde/src/keyring/keyring_vault.c
+          gcov -abcfu contrib/pg_tde/src/smgr/pg_tde_smgr.c
+          gcov -abcfu contrib/pg_tde/src/transam/pg_tde_xact_handler.c
+        working-directory: src
 
       - name: Upload
         uses: codecov/codecov-action@v5
         with:
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          working-directory: src/contrib/pg_tde
+          working-directory: src
           files: ./pg_tde.c.gcov,./percona.h.gcov,./pg_tde_defs.c.gcov,./transam.h.gcov,./pg_tde_event_capture.c.gcov,./pg_tde_guc.c.gcov,./pg_tde_tdemap.c.gcov,./pg_tde_xlog.c.gcov,./pg_tde_xlog_encrypt.c.gcov,./pg_tde_tdemap.h.gcov,./xlog_smgr.h.gcov,./generic.h.gcov,./atomics.h.gcov,./tde_keyring.c.gcov,./pg_list.h.gcov,./tde_keyring_parse_opts.c.gcov,./timestamp.h.gcov,./tde_principal_key.c.gcov,./funcapi.h.gcov,./pg_tde_shmem.c.gcov,./pg_tde_utils.c.gcov,./postgres.h.gcov,./enc_aes.c.gcov,./enc_tde.c.gcov,./palloc.h.gcov,./keyring_api.c.gcov,./keyring_curl.c.gcov,./keyring_file.c.gcov,./keyring_kmip.c.gcov,./keyring_vault.c.gcov,./typecheck-gcc.h.gcov,./pg_tde_smgr.c.gcov,./pg_tde_xact_handler.c.gcov
 
       - name: Report on test fail
