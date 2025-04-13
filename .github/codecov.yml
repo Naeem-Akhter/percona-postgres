@@ -1,4 +1,4 @@
 codecov:
   strict_yaml_branch: TDE_REL_17_STABLE  # only use the latest YAML on TDE_REL_17_STABLE branch
 fixes:
-  - "src/::contrib/pg_tde/"  # move path   e.g., "before/path" => "after/path"
+  - "src/::contrib/pg_tde/src/"  # move path for codecov file mappings e.g., "src/" => "contrib/pg_tde/src/"
