@@ -34,7 +34,7 @@ jobs:
       - name: Build postgres
         run: src/ci_scripts/${{ inputs.build_script }}-build.sh ${{ inputs.build_type }}
 
-      - name: 'Tar files'
+      - name: Archive pginst to artifact tar file
         run: tar -czf artifacts.tar src pginst
 
       - name: Upload build artifacts
@@ -64,7 +64,7 @@ jobs:
       - name: Build postgres
         run: src/ci_scripts/${{ inputs.build_script }}-build.sh ${{ inputs.build_type }} --enable-coverage
 
-      - name: 'Tar files'
+      - name: Archive pginst to artifact tar file
         run: tar -czf coverage-artifacts.tar src pginst
 
       - name: Upload build coverage-artifacts
@@ -88,7 +88,7 @@ jobs:
           name: ${{ env.artifact_name }}
           path: .
 
-      - name: Extract files
+      - name: Extract artifact file
         run: tar -xzf artifacts.tar
 
       - name: Install dependencies
@@ -126,7 +126,7 @@ jobs:
           name: ${{ env.artifact_name }}
           path: .
 
-      - name: Extract files
+      - name: Extract artifact file
         run: tar -xzf artifacts.tar
 
       - name: Install dependencies
@@ -164,7 +164,7 @@ jobs:
           name: ${{ env.coverage_artifact_name }}
           path: .
 
-      - name: Extract files
+      - name: Extract artifact file
         run: tar -xzf coverage-artifacts.tar
 
       - name: Install dependencies
@@ -209,7 +209,6 @@ jobs:
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
           working-directory: src/contrib/pg_tde
-          files: *.c.gcov
 
       - name: Report on test fail
         uses: actions/upload-artifact@v4
