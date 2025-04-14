@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use warnings FATAL => 'all';
+use warnings;
 use PostgreSQL::Test::Cluster;
 use PostgreSQL::Test::Utils;
 use Test::More;
@@ -12,10 +12,15 @@ if (!defined($ENV{PERCONA_SERVER_VERSION}))
      plan skip_all => "PERCONA_SERVER_VERSION variable not define in the environment.";
 }
 
-# Initialize a test cluster
+#Initialize a test cluster
 my $node = PostgreSQL::Test::Cluster->new('primary');
 $node->init();
 my $pgdata = $node->data_dir;
+
+#UPDATE postgresql.conf to include/load pg_tde library
+open my $conf, '>>', "$pgdata/postgresql.conf";
+print $conf "shared_preload_libraries = 'pg_tde'\n";
+close $conf;
 
 my $percona_expected_server_version = $ENV{PERCONA_SERVER_VERSION};
 
@@ -23,9 +28,19 @@ my $percona_expected_server_version = $ENV{PERCONA_SERVER_VERSION};
 my $rt_value = $node->start;
 ok($rt_value == 1, "Start Server");
 
+# CREATE EXTENSION and change out file permissions
+my ($cmdret, $stdout, $stderr) = $node->psql('postgres', 'CREATE EXTENSION pg_tde;', extra_params => ['-a']);
+ok($cmdret == 0, "CREATE PGTDE EXTENSION");
+
 # Get PG Server version ( e.g 17.4) from pg_config
 my $pg_server_version = `pg_config --version | awk {'print \$2'}`;
 $pg_server_version=~ s/^\s+|\s+$//g;
+
+# Check select version() output.
+($cmdret, $stdout, $stderr) = $node->psql('postgres', 'select version();', extra_params => ['-a', '-Pformat=aligned','-Ptuples_only=on']);
+ok($cmdret == 0, "Get output of select version();");
+$stdout=~ s/^\s+|\s+$//g;
+like($stdout, "/PostgreSQL $pg_server_version - Percona Server for PostgreSQL $percona_expected_server_version/", "# Test select version() output");
 
 # Check pg_config output.
 my $pg_config_output = `pg_config --version`;
@@ -41,12 +56,6 @@ cmp_ok($psql_version_output,'eq',"psql (PostgreSQL) $pg_server_version - Percona
 my $postgres_output = `postgres --version`;
 $postgres_output=~ s/^\s+|\s+$//g;
 cmp_ok($postgres_output,'eq',"postgres (PostgreSQL) $pg_server_version - Percona Server for PostgreSQL $percona_expected_server_version", "Test postgres --version output");
-
-# Check select version() output.
-my ($cmdret, $stdout, $stderr) = $node->psql('postgres', "select version();", extra_params => ['-a', '-Pformat=aligned','-Ptuples_only=on']);
-ok($cmdret == 0, "# Get output of select version();");
-$stdout=~ s/^\s+|\s+$//g;
-like($stdout, "/PostgreSQL $pg_server_version - Percona Server for PostgreSQL $percona_expected_server_version/", "# Test select version() output");
 
 # DROP EXTENSION
 $stdout = $node->safe_psql('postgres', 'DROP EXTENSION pg_tde;', extra_params => ['-a']);
