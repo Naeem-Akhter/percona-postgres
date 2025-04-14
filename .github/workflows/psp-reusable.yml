@@ -177,30 +177,7 @@ jobs:
         run: src/ci_scripts/${{ inputs.build_script }}-test-tde.sh --continue --tde-only
 
       - name: Run code coverage
-        run: |
-          gcov -abcfu src/pg_tde_change_key_provider.c
-          gcov -abcfu src/pg_tde_defs.c
-          gcov -abcfu src/pg_tde_event_capture.c
-          gcov -abcfu src/pg_tde_guc.c
-          gcov -abcfu src/pg_tde.c
-          gcov -abcfu src/access/pg_tde_tdemap.c
-          gcov -abcfu src/access/pg_tde_xlog_encrypt.c
-          gcov -abcfu src/access/pg_tde_xlog.c
-          gcov -abcfu src/catalog/tde_keyring_parse_opts.c
-          gcov -abcfu src/catalog/tde_keyring.c
-          gcov -abcfu src/catalog/tde_principal_key.c
-          gcov -abcfu src/common/pg_tde_shmem.c
-          gcov -abcfu src/common/pg_tde_utils.c
-          gcov -abcfu src/encryption/enc_aes.c
-          gcov -abcfu src/encryption/enc_tde.c
-          gcov -abcfu src/keyring/keyring_api.c
-          gcov -abcfu src/keyring/keyring_curl.c
-          gcov -abcfu src/keyring/keyring_file.c
-          gcov -abcfu src/keyring/keyring_kmip_impl.c
-          gcov -abcfu src/keyring/keyring_kmip.c
-          gcov -abcfu src/keyring/keyring_vault.c
-          gcov -abcfu src/smgr/pg_tde_smgr.c
-          gcov -abcfu src/transam/pg_tde_xact_handler.c
+        run: find src/ -type f -name "*.c" ! -path '*libkmip*' | xargs -t gcov -abcfu
         working-directory: src/contrib/pg_tde
 
       - name: Upload coverage data to codecov.io
