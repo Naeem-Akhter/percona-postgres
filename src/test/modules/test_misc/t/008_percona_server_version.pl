@@ -43,7 +43,7 @@ $postgres_output=~ s/^\s+|\s+$//g;
 cmp_ok($postgres_output,'eq',"postgres (PostgreSQL) $pg_server_version - Percona Server for PostgreSQL $percona_expected_server_version", "Test postgres --version output");
 
 # Check select version() output.
-($cmdret, $stdout, $stderr) = $node->psql('postgres', "select version();", extra_params => ['-a', '-Pformat=aligned','-Ptuples_only=on']);
+my ($cmdret, $stdout, $stderr) = $node->psql('postgres', "select version();", extra_params => ['-a', '-Pformat=aligned','-Ptuples_only=on']);
 ok($cmdret == 0, "# Get output of select version();");
 $stdout=~ s/^\s+|\s+$//g;
 like($stdout, "/PostgreSQL $pg_server_version - Percona Server for PostgreSQL $percona_expected_server_version/", "# Test select version() output");
