@@ -1,46 +1,57 @@
-
 curldep = dependency('libcurl')
 
 pg_tde_sources = files(
-        'src/pg_tde.c',
-        'src/transam/pg_tde_xact_handler.c',
-        'src/access/pg_tde_tdemap.c',
-        'src/access/pg_tde_xlog.c',
-        'src/access/pg_tde_xlog_encrypt.c',
+  'src/access/pg_tde_tdemap.c',
+  'src/access/pg_tde_xlog.c',
+  'src/access/pg_tde_xlog_encrypt.c',
+  'src/catalog/tde_keyring.c',
+  'src/catalog/tde_keyring_parse_opts.c',
+  'src/catalog/tde_principal_key.c',
+  'src/common/pg_tde_shmem.c',
+  'src/common/pg_tde_utils.c',
+  'src/encryption/enc_aes.c',
+  'src/encryption/enc_tde.c',
+  'src/keyring/keyring_api.c',
+  'src/keyring/keyring_curl.c',
+  'src/keyring/keyring_file.c',
+  'src/keyring/keyring_kmip.c',
+  'src/keyring/keyring_kmip_impl.c',
+  'src/keyring/keyring_vault.c',
+  'src/pg_tde.c',
+  'src/pg_tde_defs.c',
+  'src/pg_tde_event_capture.c',
+  'src/pg_tde_guc.c',
+  'src/smgr/pg_tde_smgr.c',
+  'src/transam/pg_tde_xact_handler.c',
+)
 
-        'src/encryption/enc_tde.c',
-        'src/encryption/enc_aes.c',
-
-        'src/keyring/keyring_curl.c',
-        'src/keyring/keyring_file.c',
-        'src/keyring/keyring_vault.c',
-        'src/keyring/keyring_kmip.c',
-        'src/keyring/keyring_kmip_impl.c',
-        'src/keyring/keyring_api.c',
-
-        'src/smgr/pg_tde_smgr.c',
-
-        'src/catalog/tde_keyring.c',
-        'src/catalog/tde_keyring_parse_opts.c',
-        'src/catalog/tde_principal_key.c',
-        'src/common/pg_tde_shmem.c',
-        'src/common/pg_tde_utils.c',
-        'src/pg_tde_defs.c',
-        'src/pg_tde_event_capture.c',
-        'src/pg_tde_guc.c',
-        'src/pg_tde.c',
+tde_frontend_sources = files(
+  'src/access/pg_tde_tdemap.c',
+  'src/access/pg_tde_xlog_encrypt.c',
+  'src/catalog/tde_keyring.c',
+  'src/catalog/tde_keyring_parse_opts.c',
+  'src/catalog/tde_principal_key.c',
+  'src/common/pg_tde_utils.c',
+  'src/encryption/enc_aes.c',
+  'src/encryption/enc_tde.c',
+  'src/keyring/keyring_api.c',
+  'src/keyring/keyring_curl.c',
+  'src/keyring/keyring_file.c',
+  'src/keyring/keyring_kmip.c',
+  'src/keyring/keyring_kmip_impl.c',
+  'src/keyring/keyring_vault.c',
 )
 
 incdir = include_directories('src/include', '.', 'src/libkmip/libkmip/include/')
 
 kmip = static_library(
   'kmip',
-  files( 
-        'src/libkmip/libkmip/src/kmip.c',
-        'src/libkmip/libkmip/src/kmip_bio.c',
-        'src/libkmip/libkmip/src/kmip_locate.c',
-        'src/libkmip/libkmip/src/kmip_memset.c'
-        ),
+  files(
+    'src/libkmip/libkmip/src/kmip.c',
+    'src/libkmip/libkmip/src/kmip_bio.c',
+    'src/libkmip/libkmip/src/kmip_locate.c',
+    'src/libkmip/libkmip/src/kmip_memset.c'
+  ),
   c_args: [ '-w' ], # This is a 3rd party, disable warnings completely
   include_directories: incdir
 )
@@ -71,38 +82,38 @@ install_data(
   kwargs: contrib_data_args,
 )
 
-# toast_descrypt needs to be the first test when running with pg_tde
+# toast_decrypt needs to be the first test when running with pg_tde
 # preinstalled and default_principal_key needs to run after key_provider.
 sql_tests = [
-      'toast_decrypt',
-      'access_control',
-      'alter_index',
-      'cache_alloc',
-      'change_access_method',
-      'insert_update_delete',
-      'key_provider',
-      'keyprovider_dependency',
-      'kmip_test',
-      'pg_tde_is_encrypted',
-      'relocate',
-      'recreate_storage',
-      'subtransaction',
-      'tablespace',
-      'vault_v2_test',
-      'default_principal_key',
+  'toast_decrypt',
+  'access_control',
+  'alter_index',
+  'cache_alloc',
+  'change_access_method',
+  'insert_update_delete',
+  'key_provider',
+  'keyprovider_dependency',
+  'kmip_test',
+  'pg_tde_is_encrypted',
+  'relocate',
+  'recreate_storage',
+  'subtransaction',
+  'tablespace',
+  'vault_v2_test',
+  'default_principal_key',
 ]
 
 tap_tests = [
-      't/001_basic.pl',
-      't/002_rotate_key.pl',
-      't/003_remote_config.pl',
-      't/004_file_config.pl',
-      't/005_multiple_extensions.pl',
-      't/006_remote_vault_config.pl',
-      't/007_tde_heap.pl',
-      't/008_key_rotate_tablespace.pl',
-      't/009_wal_encrypt.pl',
-      't/010_change_key_provider.pl',
+  't/001_basic.pl',
+  't/002_rotate_key.pl',
+  't/003_remote_config.pl',
+  't/004_file_config.pl',
+  't/005_multiple_extensions.pl',
+  't/006_remote_vault_config.pl',
+  't/007_tde_heap.pl',
+  't/008_key_rotate_tablespace.pl',
+  't/009_wal_encrypt.pl',
+  't/010_change_key_provider.pl',
 ]
 
 tests += {
@@ -118,28 +129,10 @@ tests += {
     'tests': tap_tests  },
 }
 
-# TODO: do not duplicate
-tde_decrypt_sources = files(
-   'src/access/pg_tde_tdemap.c',
-   'src/access/pg_tde_xlog_encrypt.c',
-   'src/catalog/tde_keyring.c',
-   'src/catalog/tde_keyring_parse_opts.c',
-   'src/catalog/tde_principal_key.c',
-   'src/common/pg_tde_utils.c',
-   'src/encryption/enc_aes.c',
-   'src/encryption/enc_tde.c',
-   'src/keyring/keyring_api.c',
-   'src/keyring/keyring_curl.c',
-   'src/keyring/keyring_file.c',
-   'src/keyring/keyring_vault.c',
-   'src/keyring/keyring_kmip.c',
-   'src/keyring/keyring_kmip_impl.c',
- )
-
 pg_tde_inc = incdir
 
 pg_tde_frontend = static_library('pg_tde_frontend',
-  tde_decrypt_sources,
+  tde_frontend_sources,
   c_pch: pch_postgres_h,
   c_args: ['-DFRONTEND'],
   kwargs: mod_args,
