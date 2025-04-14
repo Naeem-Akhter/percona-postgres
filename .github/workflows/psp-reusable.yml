@@ -88,7 +88,7 @@ jobs:
           name: ${{ env.artifact_name }}
           path: .
 
-      - name: 'Untar files'
+      - name: Extract files
         run: tar -xzf artifacts.tar
 
       - name: Install dependencies
@@ -126,7 +126,7 @@ jobs:
           name: ${{ env.artifact_name }}
           path: .
 
-      - name: 'Untar files'
+      - name: Extract files
         run: tar -xzf artifacts.tar
 
       - name: Install dependencies
@@ -164,7 +164,7 @@ jobs:
           name: ${{ env.coverage_artifact_name }}
           path: .
 
-      - name: 'Untar files'
+      - name: Extract files
         run: tar -xzf coverage-artifacts.tar
 
       - name: Install dependencies
@@ -209,14 +209,7 @@ jobs:
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
           working-directory: src/contrib/pg_tde
-          files: >
-            ./pg_tde_change_key_provider.c.gcov,./pg_tde_defs.c.gcov,./pg_tde_event_capture.c.gcov,
-            ./pg_tde_guc.c.gcov,./pg_tde.c.gcov,./pg_tde_tdemap.c.gcov,./pg_tde_xlog_encrypt.c.gcov,
-            ./pg_tde_xlog.c.gcov,./tde_keyring_parse_opts.c.gcov,./tde_keyring.c.gcov,
-            ./tde_principal_key.c.gcov,./pg_tde_shmem.c.gcov,./pg_tde_utils.c.gcov,./enc_aes.c.gcov,
-            ./enc_tde.c.gcov,./keyring_api.c.gcov,./keyring_curl.c.gcov,./keyring_file.c.gcov,
-            ./keyring_kmip_impl.c.gcov,./keyring_kmip.c.gcov,./keyring_vault.c.gcov,./pg_tde_smgr.c.gcov,
-            ./pg_tde_xact_handler.c.gcov
+          files: *.c.gcov
 
       - name: Report on test fail
         uses: actions/upload-artifact@v4

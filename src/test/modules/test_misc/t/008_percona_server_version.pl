@@ -17,20 +17,11 @@ my $node = PostgreSQL::Test::Cluster->new('primary');
 $node->init();
 my $pgdata = $node->data_dir;
 
-# UPDATE postgresql.conf to include/load pg_tde library
-open my $conf, '>>', "$pgdata/postgresql.conf";
-print $conf "shared_preload_libraries = 'pg_tde'\n";
-close $conf;
-
 my $percona_expected_server_version = $ENV{PERCONA_SERVER_VERSION};
 
 # Start server
 my $rt_value = $node->start;
 ok($rt_value == 1, "Start Server");
-
-# CREATE EXTENSION and change out file permissions
-my ($cmdret, $stdout, $stderr) = $node->psql('postgres', 'CREATE EXTENSION pg_tde;', extra_params => ['-a']);
-ok($cmdret == 0, "CREATE PGTDE EXTENSION");
 
 # Get PG Server version ( e.g 17.4) from pg_config
 my $pg_server_version = `pg_config --version | awk {'print \$2'}`;
