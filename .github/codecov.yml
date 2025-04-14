@@ -2,3 +2,51 @@ codecov:
   strict_yaml_branch: TDE_REL_17_STABLE  # only use the latest YAML on TDE_REL_17_STABLE branch
 fixes:
   - "src/::contrib/pg_tde/src/"  # move path for codecov file mappings e.g., "src/" => "contrib/pg_tde/src/"
+coverage:
+  status:
+    project: #add everything under here, more options at https://docs.codecov.com/docs/commit-status
+      default:
+        target: 90% #default
+        threshold: 1%
+        base: auto
+comment:
+  layout: "header, diff, components"  # show component info in the PR comment
+component_management:
+  default_rules:  # default rules that will be inherited by all components
+    statuses:
+      - type: project # in this case every component that doens't have a status defined will have a project type one
+        target: auto
+        branches:
+          - "TDE_REL_17_STABLE"
+  individual_components:
+    - component_id: module_access  # this is an identifier that should not be changed
+      name: access  # this is a display name, and can be changed freely
+      paths:
+        - src/access/**
+    - component_id: module_catalog  # this is an identifier that should not be changed
+      name: catalog  # this is a display name, and can be changed freely
+      paths:
+        - src/catalog/**
+    - component_id: module_common  # this is an identifier that should not be changed
+      name: common  # this is a display name, and can be changed freely
+      paths:
+        - src/common/**
+    - component_id: module_encryption  # this is an identifier that should not be changed
+      name: encryption  # this is a display name, and can be changed freely
+      paths:
+        - src/encryption/**
+    - component_id: module_keyring  # this is an identifier that should not be changed
+      name: keyring  # this is a display name, and can be changed freely
+      paths:
+        - src/keyring/**
+    - component_id: src
+      paths:
+        - src/*.c
+    - component_id: module_smgr  # this is an identifier that should not be changed
+      name: smgr  # this is a display name, and can be changed freely
+      paths:
+        - src/smgr/**
+    - component_id: module_transam  # this is an identifier that should not be changed
+      name: transam  # this is a display name, and can be changed freely
+      paths:
+        - src/transam/**
