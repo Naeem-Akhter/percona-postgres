@@ -48,8 +48,29 @@ jobs:
 
   build-coverage:
     name: Build PSP for Coverage
+    exclude:
+      - os: ubuntu-24.04
+        build_type: debugoptimized
+        build_script: meson
+      - os: ubuntu-24.04
+        build_type: debug
+        build_script: meson
+      - os: ubuntu-24.04
+        build_type: debugoptimized
+        build_script: make
+      - os: ubuntu-24.04
+        build_type: debug
+        build_script: make
+      - os: ubuntu-22.04
+        build_type: debugoptimized
+        build_script: meson
+      - os: ubuntu-22.04
+        build_type: debug
+        build_script: meson
+      - os: ubuntu-22.04
+        build_type: debugoptimized
+        build_script: make
     runs-on: ${{ inputs.os }}
-    if: inputs.build_script == 'make' && inputs.build_type == 'debug' && inputs.os == 'ubuntu-24.04'
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -153,8 +174,29 @@ jobs:
 
   test_tde_coverage:
     name: Generate Codecov Code Coverage
+    exclude:
+      - os: ubuntu-24.04
+        build_type: debugoptimized
+        build_script: meson
+      - os: ubuntu-24.04
+        build_type: debug
+        build_script: meson
+      - os: ubuntu-24.04
+        build_type: debugoptimized
+        build_script: make
+      - os: ubuntu-24.04
+        build_type: debug
+        build_script: make
+      - os: ubuntu-22.04
+        build_type: debugoptimized
+        build_script: meson
+      - os: ubuntu-22.04
+        build_type: debug
+        build_script: meson
+      - os: ubuntu-22.04
+        build_type: debugoptimized
+        build_script: make
     runs-on: ${{ inputs.os }}
-    if: inputs.build_script == 'make' && inputs.build_type == 'debug' && inputs.os == 'ubuntu-24.04'
     needs: build
 
     steps:
