@@ -11,7 +11,7 @@ jobs:
     name: PSP
     strategy:
       matrix:
-        os: ['ubuntu-22.04']
+        os: ['ubuntu-22.04','ubuntu-24.04']
         build_type: [debug,debugoptimized]
         build_script: [make, meson]
     uses: ./.github/workflows/psp-reusable.yml
