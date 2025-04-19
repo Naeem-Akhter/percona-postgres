@@ -49,7 +49,7 @@ jobs:
   build-coverage:
     name: Build PSP for Coverage
     runs-on: ${{ inputs.os }}
-    if: inputs.build_script == 'make' && inputs.build_type == 'debug'
+    if: inputs.build_script == 'make' && inputs.build_type == 'debug' && inputs.os == 'ubuntu-24.04'
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -154,7 +154,7 @@ jobs:
   test_tde_coverage:
     name: Generate Codecov Code Coverage
     runs-on: ${{ inputs.os }}
-    if: inputs.build_script == 'make' && inputs.build_type == 'debug'
+    if: inputs.build_script == 'make' && inputs.build_type == 'debug' && inputs.os == 'ubuntu-24.04'
     needs: build
 
     steps:
