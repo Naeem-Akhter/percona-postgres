@@ -14,19 +14,19 @@ jobs:
         os: ['ubuntu-22.04','ubuntu-24.04','ubuntu-20.04']
         build_type: [debug,debugoptimized]
         build_script: [make, meson]
-      exclude:
-      - os: ubuntu-24.04
-        build_type: debugoptimized
-        build_script: meson
-      - os: ubuntu-24.04
-        build_type: debugoptimized
-        build_script: make
-      - os: ubuntu-20.04
-        build_type: debugoptimized
-        build_script: meson
-      - os: ubuntu-20.04
-        build_type: debugoptimized
-        build_script: make
+        exclude:
+        - os: ubuntu-24.04
+          build_type: debugoptimized
+          build_script: meson
+        - os: ubuntu-24.04
+          build_type: debugoptimized
+          build_script: make
+        - os: ubuntu-20.04
+          build_type: debugoptimized
+          build_script: meson
+        - os: ubuntu-20.04
+          build_type: debugoptimized
+          build_script: make
     uses: ./.github/workflows/psp-reusable.yml
     with:
         os: ${{ matrix.os }}
