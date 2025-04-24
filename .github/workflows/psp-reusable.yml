@@ -120,4 +120,3 @@ jobs:
             src/contrib/*/regression.diffs
             src/contrib/*/regression.out
           retention-days: 3
-
