@@ -17,10 +17,8 @@ source "$SCRIPT_DIR/env.sh"
 
 cd "$SCRIPT_DIR/.."
 
-if [ "$1" = "debugoptimized" ]; then
-    export CFLAGS="-O2"
-    export CXXFLAGS="-O2"
-fi
+export CFLAGS="-O2 -DFRONTEND"
+export CXXFLAGS="-O2"
 
 ./configure --prefix="$INSTALL_DIR" --enable-debug --enable-cassert --enable-tap-tests $ENABLE_COVERAGE
 make install-world -j
