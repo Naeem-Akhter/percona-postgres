@@ -17,8 +17,7 @@ source "$SCRIPT_DIR/env.sh"
 
 cd "$SCRIPT_DIR/.."
 
-export CFLAGS="-O2 -DFRONTEND"
-export CXXFLAGS="-O2"
+export CFLAGS="-DFRONTEND"
 
 ./configure --prefix="$INSTALL_DIR" --enable-debug --enable-cassert --enable-tap-tests $ENABLE_COVERAGE
 make install-world -j
