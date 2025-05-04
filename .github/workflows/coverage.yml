@@ -6,7 +6,7 @@ on:
       - TDE_REL_17_STABLE
 
 env:
-  PGCTLTIMEOUT: 120 # Avoid failures on slow recovery
+  PGCTLTIMEOUT: 240 # Avoid failures on slow recovery
 
 jobs:
   collect:
@@ -22,13 +22,13 @@ jobs:
         run: ci_scripts/ubuntu-deps.sh
 
       - name: Build postgres
-        run: ci_scripts/make-build.sh debug --enable-coverage
+        run: ci_scripts/meson-build.sh debug --enable-coverage
 
       - name: Setup kmip and vault
         run: ci_scripts/setup-keyring-servers.sh
 
       - name: Test postgres with TDE to generate coverage
-        run: ci_scripts/make-test.sh --tde-only
+        run: ci_scripts/meson-test.sh --tde-only
 
       - name: Collect coverage data
         run: find . -type f -name "*.c" ! -path '*libkmip*' | xargs -t gcov -abcfu
