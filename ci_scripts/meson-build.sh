@@ -3,9 +3,9 @@
 ENABLE_COVERAGE=
 
 for arg do
-  shift
-  [ "$arg" = "--enable-coverage" ] && ENABLE_COVERAGE="-Db_coverage=true" && continue
-  set -- "$@" "$arg"
+    shift
+    [ "$arg" = "--enable-coverage" ] && ENABLE_COVERAGE="-Db_coverage=true" && continue
+    set -- "$@" "$arg"
 done
 
 SCRIPT_DIR="$(cd -- "$(dirname "$0")" >/dev/null 2>&1; pwd -P)"
