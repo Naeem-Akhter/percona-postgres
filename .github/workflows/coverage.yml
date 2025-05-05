@@ -6,7 +6,7 @@ on:
       - TDE_REL_17_STABLE
 
 env:
-  PGCTLTIMEOUT: 240 # Avoid failures on slow recovery
+  PGCTLTIMEOUT: 120 # Avoid failures on slow recovery
 
 jobs:
   collect:
@@ -22,7 +22,7 @@ jobs:
         run: ci_scripts/ubuntu-deps.sh
 
       - name: Build postgres
-        run: ci_scripts/meson-build.sh debug --enable-coverage
+        run: ci_scripts/meson-build.sh debug
 
       - name: Setup kmip and vault
         run: ci_scripts/setup-keyring-servers.sh
